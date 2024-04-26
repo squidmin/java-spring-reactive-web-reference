@@ -1,3 +1,6 @@
 spring:
   application:
     name: java-spring-reactive-web-reference
+
+product-recommendations:
+  base-url: localhost:8000

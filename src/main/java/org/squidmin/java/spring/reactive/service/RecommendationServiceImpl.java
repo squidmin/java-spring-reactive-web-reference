@@ -1,5 +1,6 @@
 package org.squidmin.java.spring.reactive.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
+    private final String baseUrl;
     private final WebClient webClient;
 
-    public RecommendationServiceImpl(WebClient webClient) {
+    public RecommendationServiceImpl(@Value("${product-recommendations.base-url}") String baseUrl, WebClient webClient) {
+        this.baseUrl = baseUrl;
         this.webClient = webClient;
     }
 
@@ -22,14 +25,14 @@ public class RecommendationServiceImpl implements RecommendationService {
     public Flux<Product> getRecommendations(Long productId) {
         Mono<List<Product>> purchaseHistoryRecommendation = webClient
             .get()
-            .uri("http://localhost:8000/products/{id}/purchaseHistory", productId)
+            .uri("http://" + baseUrl + "/products/{id}/purchaseHistory", productId)
             .retrieve()
             .bodyToMono(new ParameterizedTypeReference<List<Product>>() {
             });
 
         Mono<List<Product>> coOccurrenceRecommendation = webClient
             .get()
-            .uri("http://localhost:8000/products/{id}/coOccurrence", productId)
+            .uri("http://" + baseUrl + "/products/{id}/coOccurrence", productId)
             .retrieve()
             .bodyToMono(new ParameterizedTypeReference<List<Product>>() {
             });
