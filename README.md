@@ -37,6 +37,7 @@ The application will be available at `http://localhost:8080`.
 ### Available endpoints
 
 - `GET /hello`: Returns a simple greeting.
+- `GET /{productId}/recommendations`: Return fake product recommendations.
 
 ## Running tests
 
